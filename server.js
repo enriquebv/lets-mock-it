@@ -17,7 +17,9 @@ app.set('views', path.join(__dirname, './views'))
 /** Static dir */
 app.use(express.static('public'))
 
-const server = app.listen(port)
+const server = app.listen(port, done => {
+  console.log('App running in http://localhost:%d', port)
+})
 
 /** Routes */
 routes(app)

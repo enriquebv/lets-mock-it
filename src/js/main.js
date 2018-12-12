@@ -33,12 +33,6 @@ new Vue({
     },
     showPannel() {
       this.showingPannel = true
-    },
-    formatCode() {
-      const content = this.$refs.code.value
-      const object = JSON.parse(content)
-
-      this.$refs.code.value = jsonBeautify(object, null, 2, 80)
     }
   },
   computed: {
@@ -47,11 +41,6 @@ new Vue({
     },
     currentUrl() {
       return window.location.href
-    }
-  },
-  watch: {
-    'ajax.content'() {
-      this.ajax.content = jsonBeautify(this.ajax.content)
     }
   },
   mounted() {
@@ -65,7 +54,5 @@ new Vue({
 
     /** Socket.io */
     this.socket = new SocketIo()
-
-    console.info(this.socket)
   }
 })

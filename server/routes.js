@@ -13,7 +13,6 @@ module.exports = function (server) {
           description: 'Let\'s MockIt.'
         },
         scripts: [
-          './js/vendor.js',
           './js/main.js'
         ]
       })
