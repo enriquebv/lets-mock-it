@@ -1,0 +1,33 @@
+<canvas class="particle-bg"></canvas>
+<div id="lets-mock-it">
+  <!-- Channel-selector -->
+  <header>
+    <transition name="channel-disappear">
+      <h1>Let's Mock...</h1>
+    </transition>
+  </header>
+  <transition-group name="channel-disappear" tag="div" class="channels">
+    <button class="channel" v-for="channel in channels" v-if="!showingPannel" :class="channel.id" :key="channel.id"
+      :disabled="!channel.active" :title="channel.description" v-tippy="{ placement : 'bottom',  arrow: true }" @click="selectChannel(channel)">
+      <p>{{ channel.name }}</p>
+    </button>
+  </transition-group>
+  <!-- Channel Panel -->
+  <transition name="channel-panel-animation" mode="out-in">
+    <div class="channel-panel" v-if="showingPannel">
+      <h2>{{ currentChannel.name }}</h2>
+      <label class="endpoint complete-input" ref="endpoint">{{ currentUrl }}api/{{ creatingChannel }}/
+        <input title="The URL where you go to send AJAX petitions." type="text" placeholder="endpoint" v-tippy/>
+      </label>
+      <label class="response">
+        <p>Response</p>
+        <textarea ref="code" @change="formatCode"></textarea>
+      </label>
+      <div class="actions">
+        <label class="status"><input :class="`status-${ajax.status}`" type="number" min="100" max="999" placeholder="Status (200, 400, etc)" v-model="ajax.status"/></label>
+        <button>Cancel</button>
+        <button>Create mock</button>
+      </div>
+    </div>
+  </transition>
+</div>

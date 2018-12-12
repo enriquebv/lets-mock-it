@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="es" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="google" value="notranslate">
+    <link rel="icon" type="image/png" href="/img/logo-simple.png" />
+    <title>Let's Mock It</title>
+    <meta name="description" content="<%= meta.description %>">
+    <link href="/css/style.css" rel="stylesheet">
+    <% css.forEach(sheet => { %>
+      <link href="<%= sheet %>" rel="stylesheet">
+    <% }) %>
+    <link rel="icon" type="image/png" href="./favicon.png">
+  </head>
+  <body>
+    <%- content %>
+    <script src="/js/vendor.js"/ defer></script>
+    <% scripts.forEach(script => { %>
+      <script src="<%- script %>" defer></script>
+    <% }) %>
+    <% if (onlyLogged && !logged) { %>
+      <script src="/js/login.js" defer/>
+    <% } %>
+  </body>
+</html>

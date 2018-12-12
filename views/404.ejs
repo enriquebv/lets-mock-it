@@ -1,0 +1,14 @@
+<div id="is-404">
+  <h2>404</h2>
+  <p class="ops">Ops! Maybe we've lost one thing!</b>
+  <p>You will be redirected to <a href="/">homepage</a> in <span id="seconds">10</span> seconds.</p>
+</div>
+<script>
+  const seconds = document.getElementById('seconds')
+  let remaining = 10
+  setInterval(() => {
+    if (remaining === 0) location.href = '/'
+    remaining--
+    seconds.innerText = remaining
+  }, 1000)
+</script>

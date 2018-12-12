@@ -1,0 +1,208 @@
+@import "reset";
+@import "./tippy/tippy.scss";
+
+$main-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+  Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+$grey-text: #bdc3c7;
+$background: #23272a;
+
+html,
+body {
+  min-height: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-size: 14px;
+}
+
+body {
+  font-family: $main-font;
+  background: $background;
+  font-size: 14px;
+}
+
+.particle-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  opacity: 0.3;
+}
+
+a {
+  text-decoration: none;
+  color: #ac1843;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+*[v-cloak] {
+  display: none;
+}
+
+input,
+textarea,
+button {
+  font-family: $main-font;
+  padding: 8px 16px;
+  border: 0;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.tippy-tooltip {
+  font-size: 1.5em;
+}
+
+%complete-input {
+  background: #fff;
+  color: $grey-text;
+  padding: 6px 12px;
+  border-radius: 2px;
+
+  input {
+    padding: 0px 3px;
+    color: #444;
+  }
+
+  input:focus + label {
+    border: 2px solid #3498db;
+  }
+}
+
+#lets-mock-it {
+  height: 100%;
+  display: flex;
+  flex-flow: column;
+
+  header {
+    h1 {
+      color: $grey-text;
+      font-size: 5em;
+      text-align: center;
+      margin-top: 1.5em;
+    }
+  }
+
+  .channels {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    margin-top: 2em;
+
+    button.channel {
+      height: 180px;
+      display: flex;
+      justify-content: flex-end;
+      flex-flow: column;
+      text-align: left;
+      margin: 6px;
+      background: transparent;
+      font-size: 2em;
+      color: $background;
+      background: $grey-text;
+      cursor: pointer;
+
+      &.ajax {
+        background: #feca57;
+      }
+
+      &.ws {
+        background: #079992;
+      }
+
+      p {
+        text-align: right;
+        width: 156px;
+        font-weight: bold;
+      }
+    }
+  }
+
+  .channel-panel {
+    margin: 0px auto;
+    margin-bottom: auto;
+    background: #ecf0f1;
+    padding: 20px;
+    border-radius: 2px;
+    width: 100%;
+    max-width: 1200px;
+    overflow-y: scroll;
+    display: flex;
+    flex-flow: column;
+
+    label.endpoint {
+      @extend %complete-input;
+    }
+
+    label.status {
+      input[type="number"] {
+        font-weight: 500;
+        width:calc(14px * 2);
+        color:#2980b9;
+
+        &::-webkit-outer-spin-button,
+        &::-webkit-inner-spin-button {
+          -webkit-appearance: none;
+          -moz-appearance: none;
+          appearance: none;
+          margin: 0;
+        }
+
+        &[class*="status-1"],
+        &[class*="status-2"] {
+          color: #2ecc71;
+        }
+
+        &[class*="status-4"] {
+          color: #f39c12;
+        }
+
+        &[class*="status-5"] {
+          color: #c0392b;
+        }
+      }
+    }
+
+    label.response {
+      textarea {
+        min-width: 100%;
+        width: 100%;
+        min-height: 250px;
+        box-sizing: border-box;
+      }
+    }
+  }
+}
+
+.channel-disappear-enter-active,
+.channel-disappear-leave-active {
+  transition: all 0.3s;
+}
+
+.channel-disappear-enter, .channel-disappear-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+  &.active {
+    transform: scale(5);
+  }
+}
+
+.channel-panel-animation-enter-active,
+.channel-panel-animation-leave-active {
+  transition: all 0.3s;
+  transition-delay: 0.3s;
+}
+
+.channel-panel-animation-enter, .channel-panel-animation-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+  transform: scale(0);
+}
+
+textarea.response {
+  width: 100%;
+  min-height: 250px;
+}
