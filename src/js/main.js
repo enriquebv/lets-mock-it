@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Particles from 'particlesjs'
 import VueTippy from 'vue-tippy'
 import SocketIo from 'socket.io-client'
-import jsonBeautify from 'json-beautify'
 
 Vue.use(VueTippy)
 
@@ -12,7 +11,7 @@ new Vue({
     socket: {},
     channels: [
       { id: 'ajax', name: 'AJAX', active: true, description: 'Create an endpoint to make AJAX requests, and get some data.' },
-      { id: 'ws', name: 'Websocket', active: true, description: 'Create a websocket to connect and receive some data in intervals, or when send a command.' },
+      { id: 'ws', name: 'Websocket', active: false, description: 'Create a websocket to connect and receive some data in intervals, or when send a command.' },
       { id: 'socket-io', name: 'Socket.io', active: false, description: 'Comming soon...' },
       { id: 'sse', name: 'Server Sent Events', active: false, description: 'Comming soon...' },
       { id: 'graphql', name: 'GraphQL', active: false, description: 'Comming soon...' }
@@ -20,11 +19,18 @@ new Vue({
     creatingChannel: '',
     showingPannel: false,
     ajax: {
-      status: 200,
-      content: ''
-    }
+      response: '',
+      format: 'raw'
+    },
+    method: 'get',
+    endpoint: '',
+    status: 200,
+    mocksList: {}
   },
   methods: {
+    loadCode(code) {
+      console.info(code)
+    },
     selectChannel(channel) {
       const element = this.$el.querySelector(`.channels .${channel.id}`)
       element.classList.add('active')
@@ -33,6 +39,58 @@ new Vue({
     },
     showPannel() {
       this.showingPannel = true
+      this.$nextTick().then(() => {
+        this.$refs.endpoint.querySelector('input').focus()
+      })
+    },
+    createMock() {
+      switch (this.creatingChannel) {
+        case 'ajax':
+          this.createAjaxMock()
+          break
+      }
+    },
+    setResponse() {
+      switch (this.creatingChannel) {
+        case 'ajax':
+          this.ajax.response = this.$refs.response.value
+          break
+      }
+    },
+    createAjaxMock() {
+      const mock = {
+        endpoint: this.endpoint,
+        channel: this.creatingChannel,
+        status: this.status,
+        response: this.ajax.response,
+        format: this.ajax.format,
+        method: this.method
+      }
+
+      this.addMock(mock)
+      this.saveMock(mock)
+      this.cleanMockObject()
+    },
+    addMock(mock) {
+      this.mocksList.push(mock)
+    },
+    saveMock(mock) {
+      this.socket.emit('create-mock', mock)
+    },
+    cleanMockObject() {
+      this.endpoint = ''
+      this.status = 200
+
+      /** ajax specific */
+      this.ajax.response = ''
+      this.ajax.format = 'raw'
+      this.ajax.method = 'get'
+    },
+    loadMock(mock) {
+      console.info(mock)
+    },
+    openEndpoint(endpoint) {
+      window.open(`${this.currentUrl}${endpoint}`, '_blank')
     }
   },
   computed: {
@@ -41,6 +99,9 @@ new Vue({
     },
     currentUrl() {
       return window.location.href
+    },
+    channelMocks() {
+      return this.mocksList.filter(mock => mock.endpint = this.creatingChannel)
     }
   },
   mounted() {
@@ -53,6 +114,8 @@ new Vue({
     })
 
     /** Socket.io */
-    this.socket = new SocketIo()
+    const socket = this.socket = new SocketIo()
+
+    socket.on('mocks-list', data => this.mocksList = data)
   }
 })

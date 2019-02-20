@@ -15,18 +15,58 @@
   <!-- Channel Panel -->
   <transition name="channel-panel-animation" mode="out-in">
     <div class="channel-panel" v-if="showingPannel">
-      <h2>{{ currentChannel.name }}</h2>
-      <label class="endpoint complete-input" ref="endpoint">{{ currentUrl }}api/{{ creatingChannel }}/
-        <input title="The URL where you go to send AJAX petitions." type="text" placeholder="endpoint" v-tippy/>
-      </label>
-      <label class="response">
-        <p>Response</p>
-        <textarea ref="code" @change="formatCode"></textarea>
-      </label>
-      <div class="actions">
-        <label class="status"><input :class="`status-${ajax.status}`" type="number" min="100" max="999" placeholder="Status (200, 400, etc)" v-model="ajax.status"/></label>
-        <button>Cancel</button>
-        <button>Create mock</button>
+      <div class="list">
+        <h2>Mocks existentes</h2>
+        <div class="mock-listed empty" v-if="channelMocks.length === 0">
+          <span>No hay mocks usando {{ creatingChannel }}</span>
+        </div>
+        <div class="mock-listed" v-for="mock in channelMocks" @click="loadMock(mock)">
+          <span>/{{ mock.endpoint }}</span>
+          <button @click="openEndpoint(mock.endpoint)">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
+              <path d="M0 0h24v24H0z" fill="none" />
+              <path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z" />
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="header">
+          <label class="endpoint complete-input" ref="endpoint">
+            <span class="root">{{ currentUrl }}</span><input type="text" placeholder="endpoint" v-model="endpoint" />
+          </label>
+          <label class="status">
+            <input :class="`status-${status}`" type="number" min="100" max="999" placeholder="Status (200, 400, etc)"
+              v-model.number="status" />
+          </label>
+        </div>
+        <textarea class="response" ref="response" v-model="ajax.response" placeholder="Respuesta (JSON, XML, etc)"></textarea>
+        <div class="channel-footer">
+          <div class="format-selector" title="El formato que tendra la respuesta." v-tippy>
+            <input name="response-format" type="radio" id="format-raw" value="raw" v-model="ajax.format" />
+            <label for="format-raw" class="response-label">
+              Texto plano
+            </label>
+            <input name="response-format" type="radio" id="format-json" value="json" v-model="ajax.format" />
+            <label for="format-json" class="response-label">
+              { JSON }
+            </label>
+            <input name="response-format" type="radio" id="format-xml" value="xml" v-model="ajax.format" />
+            <label for="format-xml" class="response-label">
+              &lt; XML &gt;
+            </label>
+          </div>
+          <div class="method-selector">
+            <input name="method" type="radio" id="method-get" value="get" v-model="method"/>
+            <label for="method-get" class="method-label">GET</label>
+            <input name="method" type="radio" id="method-post" value="post" v-model="method"/>
+            <label for="method-post" class="method-label">POST</label>
+          </div>
+          <div class="actions">
+            <button class="cancel">Cancelar</button>
+            <button @click="createMock">Crear mock</button>
+          </div>
+        </div>
       </div>
     </div>
   </transition>

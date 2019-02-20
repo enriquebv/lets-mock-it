@@ -10,7 +10,6 @@ html,
 body {
   min-height: 100%;
   height: 100%;
-  overflow: hidden;
   font-size: 14px;
 }
 
@@ -55,7 +54,7 @@ button {
 }
 
 .tippy-tooltip {
-  font-size: 1.5em;
+  font-size: 1em;
 }
 
 %complete-input {
@@ -75,7 +74,7 @@ button {
 }
 
 #lets-mock-it {
-  height: 100%;
+  min-height: 100%;
   display: flex;
   flex-flow: column;
 
@@ -107,6 +106,12 @@ button {
       background: $grey-text;
       cursor: pointer;
 
+      &:disabled {
+        color: $background !important;
+        background: $grey-text !important;
+        cursor: not-allowed;
+      }
+
       &.ajax {
         background: #feca57;
       }
@@ -130,50 +135,200 @@ button {
     padding: 20px;
     border-radius: 2px;
     width: 100%;
-    max-width: 1200px;
-    overflow-y: scroll;
+    max-width: 1600px;
     display: flex;
-    flex-flow: column;
+    flex-flow: row nowrap;
 
-    label.endpoint {
-      @extend %complete-input;
+    .panel {
+      width: 80%;
     }
 
-    label.status {
-      input[type="number"] {
-        font-weight: 500;
-        width:calc(14px * 2);
-        color:#2980b9;
+    .list {
+      width: 20%;
+      padding-right: 20px;
 
-        &::-webkit-outer-spin-button,
-        &::-webkit-inner-spin-button {
-          -webkit-appearance: none;
-          -moz-appearance: none;
-          appearance: none;
-          margin: 0;
+      h2 {
+        font-size: 1em;
+        color: $background;
+        text-transform: uppercase;
+        text-align: center;
+        font-weight: bold;
+        margin-bottom: 12px;
+      }
+
+      .mock-listed {
+        background: #fff;
+        border-radius: 2px;
+        display: flex;
+        flex-flow: row nowrap;
+        padding: 6px 12px;
+        color: $grey-text;
+        cursor: pointer;
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: space-between;
+        margin-bottom: 6px;
+
+        &.empty {
+          background: none;
+          
+          span {
+            text-align: center;
+            text-transform: uppercase;
+            font-size: 0.9em;
+            width: 100%;
+          }
+          
+          &:hover {
+            background: none;
+            color: $grey-text;
+          }
         }
 
-        &[class*="status-1"],
-        &[class*="status-2"] {
-          color: #2ecc71;
+        &:hover {
+          color: $background;
+
+          button {
+            opacity: 1;
+          }
         }
 
-        &[class*="status-4"] {
-          color: #f39c12;
+        button {
+          opacity: 0;
+          padding: 0;
+          background: none;
+          padding: 6px;
+          box-sizing: border-box;
+          fill: $grey-text;
+          cursor: pointer;
+
+          &:hover {
+            fill: #2980b9;
+          }
         }
 
-        &[class*="status-5"] {
-          color: #c0392b;
+        span {
+          margin: auto 0px;
         }
       }
     }
 
-    label.response {
-      textarea {
-        min-width: 100%;
-        width: 100%;
-        min-height: 250px;
-        box-sizing: border-box;
+    h2 {
+      font-size: 2em;
+      color: #23272a;
+      font-weight: 500;
+    }
+
+    div.header {
+      display: flex;
+      flex-flow: row nowrap;
+      margin: 6px 0px;
+
+      select.method {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        -ms-appearance: none;
+        appearance: none;
+        outline: 0;
+        box-shadow: none;
+        border: 0 !important;
+        font-size: 1.3em;
+        border:0;
+        padding:12px;
+        &:focus {
+          outline: none;
+        }
+      }
+
+      label.endpoint {
+        display: flex;
+        flex-flow: row nowrap;
+        flex: 1;
+        font-size: 2em;
+        @extend %complete-input;
+        span.root {
+          display: flex;
+          flex-flow: column;
+          justify-content: center;
+        }
+
+        span[class*="channel-text-"] {
+          font-weight: bold;
+        }
+        span.channel-text-ajax {
+          color: #feca57;
+        }
+        span.channel-text-ws {
+          color: #079992;
+        }
+        input {
+          font-size: 1em;
+          flex: 1;
+        }
+      }
+
+      label.status {
+        margin-left: 6px;
+        input[type="number"] {
+          font-weight: 500;
+          font-size: 2em;
+          width: calc(1em * 2);
+          color: #2980b9;
+          padding: 6px 12px;
+
+          &::-webkit-outer-spin-button,
+          &::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            margin: 0;
+          }
+
+          &[class*="status-1"],
+          &[class*="status-2"] {
+            color: #2ecc71;
+          }
+
+          &[class*="status-4"] {
+            color: #f39c12;
+          }
+
+          &[class*="status-5"] {
+            color: #c0392b;
+          }
+        }
+      }
+    }
+
+    textarea.response {
+      box-sizing: border-box;
+      margin: 6px 0px;
+      min-width: 100%;
+      width: 100%;
+      max-width: 100%;
+      min-height: 250px;
+      box-sizing: border-box;
+      font-family: "Courier New", Courier, monospace;
+    }
+
+    div.actions {
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: flex-end;
+
+      button {
+        background: #2980b9;
+        color: #fff;
+        text-transform: uppercase;
+        margin: 0px 3px;
+        border-radius: 2px;
+        font-weight: bold;
+        cursor: pointer;
+
+        &.cancel {
+          background: #fff;
+          color: #2980b9;
+        }
       }
     }
   }
@@ -205,4 +360,40 @@ button {
 textarea.response {
   width: 100%;
   min-height: 250px;
+}
+
+div.channel-footer {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+}
+
+div.format-selector, div.method-selector {
+  border-radius: 12px;
+
+  input[type="radio"][name="response-format"], input[type="radio"][name="method"] {
+    display: none;
+
+    &:checked + label {
+      background: #2980b9;
+      color: #fff;
+      opacity: 1;
+    }
+  }
+
+  label.response-label, label.method-label {
+    font-weight: bold;
+    background: #fff;
+    color: #2980b9;
+    padding: 8px 16px;
+    margin: 0;
+    box-sizing: border-box;
+    display: inline-block;
+    overflow: hidden;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
 }

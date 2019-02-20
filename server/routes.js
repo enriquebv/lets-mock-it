@@ -1,27 +1,26 @@
 const render = new (require('./render'))()
 const core = require('./core')
+const mockIt = require('../lib/mock-it')
 const getRenderData = core.renderData
 
 module.exports = function (server) {
 
   /** Index */
   server.route('/').get((request, response) => {
-      const data = getRenderData(request, {
-        index: true,
-        meta: {
-          title: 'MockIt',
-          description: 'Let\'s MockIt.'
-        },
-        scripts: [
-          './js/main.js'
-        ]
-      })
+    const page = {
+      index: true,
+      meta: {
+        title: 'Let\'s MockIt',
+        description: 'Let\'s MockIt.'
+      },
+      scripts: [
+        './js/main.js'
+      ]
+    }
 
-      render.page(server, response, 'index', data)
-    })
+    render.page(server, response, 'index', getRenderData(request, page))
+  })
 
   /** API */
-  server.route('/api/ajax/*').get((request, response) => {
-      response.status(200).end('test')
-    })
+  server.route('/*').all(mockIt.route)
 }
