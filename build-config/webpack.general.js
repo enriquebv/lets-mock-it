@@ -1,8 +1,9 @@
 const path = require('path')
+const fs = require('fs')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 
-module.exports = (entradas, destino) => {
+module.exports = (entradas, destino, env) => {
   if (typeof entradas !== 'object' || Array.isArray(entradas)) {
     throw '[WEBPACK] La propiedad entradas no es valida, debe ser un objeto.'
   }
@@ -56,9 +57,15 @@ module.exports = (entradas, destino) => {
     loader: 'vue-loader'
   }
 
+  const configuracionRaw = {
+    test: /\.html$/,
+    loader: 'raw-loader'
+  }
+
   module.rules.push(configuracionBabel)
   module.rules.push(configuracionSCSS)
   module.rules.push(configuracionVue)
+  module.rules.push(configuracionRaw)
 
   const pluginMiniCSS = new MiniCssExtractPlugin({
     filename: `../../${destino.css}/[name].css`,
@@ -67,12 +74,26 @@ module.exports = (entradas, destino) => {
 
   const pluginVue = new VueLoaderPlugin()
 
+  const pluginAfterEmit = {
+    apply: compiler => {
+      compiler.hooks.afterEmit.tap('AfterEmitPlugin', compilation => {
+        const scriptPath = path.resolve(__dirname, './webpack.after-emit.js')
+        const scriptExist = fs.existsSync(scriptPath)
+
+        if (scriptExist) {
+          require(scriptPath)(compilation)
+        }
+      })
+    }
+  }
+
   plugins.push(pluginMiniCSS)
   plugins.push(pluginVue)
+  plugins.push(pluginAfterEmit)
 
   const resolve = {
     alias: {
-      vue: 'vue/dist/vue.js'
+      vue: (env === 'production') ? 'vue/dist/vue.min.js' : 'vue/dist/vue.js'
     }
   }
 
@@ -81,7 +102,7 @@ module.exports = (entradas, destino) => {
       cacheGroups: {
         default: false,
         commons: {
-          test: /[\\/]node_modules[\\/]/,
+          // test: /[\\/]node_modules[\\/]|[\\/]vendor[\\/]/,
           name: 'vendor',
           chunks: 'all',
           minChunks: 2

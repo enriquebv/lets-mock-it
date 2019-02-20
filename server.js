@@ -1,12 +1,9 @@
 'use strict'
 
-const port = process.env.PORT || 8080
+const port = process.env.PORT || 81
 const express = require('express')
 const app = express()
 const path = require('path')
-const { exec } = require('child_process')
-
-const core = require('./server/core')
 const routes = require('./server/routes')
 const socketIo = require('./server/socket-io')
 

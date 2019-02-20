@@ -1,4 +1,5 @@
 const SocketIo = require('socket.io')
+const mockIt = require('../lib/mock-it')
 
 module.exports = server => {
   const io = SocketIo(server)
@@ -7,6 +8,10 @@ module.exports = server => {
   io.on('connection', socket => {
     const from = socket.client.request.headers.referer
 
-    console.info('- [Socket] New connection from %s', from)
+    /** Send all mocks on connection */
+    socket.emit('mocks-list', mockIt.getMocks())
+
+    /** Create a new mock */
+    socket.on('create-mock', mock => mockIt.createMock(mock))
   })
 }
