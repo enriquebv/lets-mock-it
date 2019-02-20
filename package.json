@@ -11,7 +11,6 @@
   "author": "Enrique Bernabeu <ebvcontacto@gmail.com>",
   "license": "ISC",
   "dependencies": {
-    "diskdb": "^0.1.17",
     "ejs": "^2.5.7",
     "express": "^4.16.3",
     "express-session": "^1.15.6",
@@ -23,7 +22,6 @@
     "particlesjs": "^2.2.3",
     "socket.io": "^2.1.1",
     "socket.io-client": "^2.1.1",
-    "vue-prism-editor": "^0.1.2",
     "vue-tippy": "^2.0.24"
   },
   "devDependencies": {
