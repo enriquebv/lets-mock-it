@@ -16,21 +16,33 @@
   <transition name="channel-panel-animation" mode="out-in">
     <div class="channel-panel" v-if="showingPannel">
       <div class="list">
-        <h2>Mocks existentes</h2>
+        <h2>Mocks</h2>
         <div class="mock-listed empty" v-if="channelMocks.length === 0">
           <span>No hay mocks usando {{ creatingChannel }}</span>
         </div>
         <div class="mock-listed" v-for="mock in channelMocks" @click="loadMock(mock)">
           <span>/{{ mock.endpoint }}</span>
-          <button @click="openEndpoint(mock.endpoint)">
+
+          <!-- Boton de eliminar -->
+          <button @click="removeEndpoint(mock)">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
               <path d="M0 0h24v24H0z" fill="none" />
               <path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z" />
             </svg>
           </button>
+
+          <!-- Boton de ver -->
+          <button @click="openEndpoint(mock.endpoint)" v-if="mock.method === 'get'">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
+              <path d="M0 0h24v24H0z" fill="none" />
+              <path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z" />
+            </svg>
+          </button>
+          
         </div>
       </div>
       <div class="panel">
+        <h2>{{ currentAction }} mock</h2>
         <div class="header">
           <label class="endpoint complete-input" ref="endpoint">
             <span class="root">{{ currentUrl }}</span><input type="text" placeholder="endpoint" v-model="endpoint" />

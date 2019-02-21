@@ -1,8 +1,8 @@
 @import "reset";
 @import "./tippy/tippy.scss";
 
-$main-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
-  Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+$main-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji",
+  "Segoe UI Emoji", "Segoe UI Symbol";
 $grey-text: #bdc3c7;
 $background: #23272a;
 
@@ -26,7 +26,7 @@ body {
   width: 100%;
   height: 100%;
   z-index: -1;
-  opacity: 0.3;
+  opacity: 0.5;
 }
 
 a {
@@ -141,19 +141,26 @@ button {
 
     .panel {
       width: 80%;
+
+      h2 {
+        font-size: 1em;
+        font-weight: bold;
+        color: $background;
+        margin-bottom: 12px;
+        text-transform: uppercase;
+      }
     }
 
     .list {
       width: 20%;
-      padding-right: 20px;
+      padding-right: 12px;
 
       h2 {
         font-size: 1em;
-        color: $background;
-        text-transform: uppercase;
-        text-align: center;
         font-weight: bold;
+        color: $background;
         margin-bottom: 12px;
+        text-transform: uppercase;
       }
 
       .mock-listed {
@@ -162,39 +169,34 @@ button {
         display: flex;
         flex-flow: row nowrap;
         padding: 6px 12px;
-        color: $grey-text;
+        color: $background;
         cursor: pointer;
         display: flex;
         flex-flow: row nowrap;
         justify-content: space-between;
         margin-bottom: 6px;
-
+        
         &.empty {
           background: none;
-          
+          display: flex;
+          flex-flow: column;
+          justify-content: center;
+
           span {
             text-align: center;
             text-transform: uppercase;
             font-size: 0.9em;
             width: 100%;
+            margin:auto 0px;
           }
-          
+
           &:hover {
             background: none;
             color: $grey-text;
           }
         }
 
-        &:hover {
-          color: $background;
-
-          button {
-            opacity: 1;
-          }
-        }
-
         button {
-          opacity: 0;
           padding: 0;
           background: none;
           padding: 6px;
@@ -222,7 +224,6 @@ button {
     div.header {
       display: flex;
       flex-flow: row nowrap;
-      margin: 6px 0px;
 
       select.method {
         -webkit-appearance: none;
@@ -233,8 +234,8 @@ button {
         box-shadow: none;
         border: 0 !important;
         font-size: 1.3em;
-        border:0;
-        padding:12px;
+        border: 0;
+        padding: 12px;
         &:focus {
           outline: none;
         }
@@ -268,7 +269,7 @@ button {
       }
 
       label.status {
-        margin-left: 6px;
+        margin-left: 12px;
         input[type="number"] {
           font-weight: 500;
           font-size: 2em;
@@ -302,7 +303,7 @@ button {
 
     textarea.response {
       box-sizing: border-box;
-      margin: 6px 0px;
+      margin:12px 0px;
       min-width: 100%;
       width: 100%;
       max-width: 100%;
@@ -368,10 +369,12 @@ div.channel-footer {
   justify-content: space-between;
 }
 
-div.format-selector, div.method-selector {
+div.format-selector,
+div.method-selector {
   border-radius: 12px;
 
-  input[type="radio"][name="response-format"], input[type="radio"][name="method"] {
+  input[type="radio"][name="response-format"],
+  input[type="radio"][name="method"] {
     display: none;
 
     &:checked + label {
@@ -381,7 +384,8 @@ div.format-selector, div.method-selector {
     }
   }
 
-  label.response-label, label.method-label {
+  label.response-label,
+  label.method-label {
     font-weight: bold;
     background: #fff;
     color: #2980b9;
@@ -391,9 +395,5 @@ div.format-selector, div.method-selector {
     display: inline-block;
     overflow: hidden;
     cursor: pointer;
-
-    &:hover {
-      opacity: 1;
-    }
   }
 }

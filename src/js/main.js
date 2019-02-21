@@ -8,6 +8,7 @@ Vue.use(VueTippy)
 new Vue({
   el: '#lets-mock-it',
   data: {
+    currentAction: 'Crear',
     socket: {},
     channels: [
       { id: 'ajax', name: 'AJAX', active: true, description: 'Create an endpoint to make AJAX requests, and get some data.' },
@@ -91,7 +92,7 @@ new Vue({
     },
     openEndpoint(endpoint) {
       window.open(`${this.currentUrl}${endpoint}`, '_blank')
-    }
+    },
   },
   computed: {
     currentChannel() {
