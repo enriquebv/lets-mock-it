@@ -1,0 +1,1 @@
+[{"endpoint":"test","channel":"ajax","status":200,"response":"{ \"test\": true }","format":"json","method":"get"},{"endpoint":"test","channel":"ajax","status":200,"response":"{ \"test\": false }","format":"json","method":"post"}]
