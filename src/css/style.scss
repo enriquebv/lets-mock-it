@@ -406,5 +406,9 @@ div.method-selector {
     display: inline-block;
     overflow: hidden;
     cursor: pointer;
+
+    &:hover {
+      opacity: 1;
+    }
   }
 }
