@@ -19,16 +19,6 @@ body {
   font-size: 14px;
 }
 
-.particle-bg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-  opacity: 0.5;
-}
-
 a {
   text-decoration: none;
   color: #ac1843;
@@ -175,7 +165,15 @@ button {
         flex-flow: row nowrap;
         justify-content: space-between;
         margin-bottom: 6px;
-        
+
+        span {
+          margin: auto 0px;
+          flex: 1;
+          max-width: 100%;
+          text-overflow: ellipsis;
+          overflow: hidden;
+        }
+
         &.empty {
           background: none;
           display: flex;
@@ -187,7 +185,7 @@ button {
             text-transform: uppercase;
             font-size: 0.9em;
             width: 100%;
-            margin:auto 0px;
+            margin: auto 0px;
           }
 
           &:hover {
@@ -201,16 +199,19 @@ button {
           background: none;
           padding: 6px;
           box-sizing: border-box;
-          fill: $grey-text;
           cursor: pointer;
 
-          &:hover {
-            fill: #2980b9;
+          svg {
+            fill: $grey-text;
+            stroke: $grey-text;
           }
-        }
 
-        span {
-          margin: auto 0px;
+          &:hover {
+            svg {
+              fill: #2980b9;
+              stroke: #2980b9;
+            }
+          }
         }
       }
     }
@@ -299,11 +300,81 @@ button {
           }
         }
       }
+
+      label.endpoint {
+        display: flex;
+        flex-flow: row nowrap;
+        flex: 1;
+        font-size: 2em;
+        @extend %complete-input;
+        span.root {
+          display: flex;
+          flex-flow: column;
+          justify-content: center;
+        }
+
+        span[class*="channel-text-"] {
+          font-weight: bold;
+        }
+        span.channel-text-ajax {
+          color: #feca57;
+        }
+        span.channel-text-ws {
+          color: #079992;
+        }
+        input {
+          font-size: 1em;
+          flex: 1;
+        }
+      }
+
+      label.status {
+        margin-left: 12px;
+        input[type="number"] {
+          font-weight: 500;
+          font-size: 2em;
+          width: calc(1em * 2);
+          color: #2980b9;
+          padding: 6px 12px;
+
+          &::-webkit-outer-spin-button,
+          &::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            margin: 0;
+          }
+
+          &[class*="status-1"],
+          &[class*="status-2"] {
+            color: #2ecc71;
+          }
+
+          &[class*="status-4"] {
+            color: #f39c12;
+          }
+
+          &[class*="status-5"] {
+            color: #c0392b;
+          }
+        }
+      }
     }
 
     textarea.response {
       box-sizing: border-box;
       margin:12px 0px;
+      min-width: 100%;
+      width: 100%;
+      max-width: 100%;
+      min-height: 250px;
+      box-sizing: border-box;
+      font-family: "Courier New", Courier, monospace;
+    }
+
+    textarea.response {
+      box-sizing: border-box;
+      margin: 12px 0px;
       min-width: 100%;
       width: 100%;
       max-width: 100%;
@@ -395,5 +466,37 @@ div.method-selector {
     display: inline-block;
     overflow: hidden;
     cursor: pointer;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+.tippy-tooltip.menu-theme {
+  padding:0;
+  background: none;
+  
+  .tippy-content {
+    background: #FFF;
+    border-radius: 4px;
+    overflow: hidden;
+    .mock-listed-options {
+      display: flex;
+      flex-flow: column;
+      justify-content: center;
+      button {
+        background:#FFF;
+        border:none;
+        cursor: pointer;
+        opacity: 0.6;
+        &.remove {
+          color:#e74c3c;
+        }
+        &:hover {
+          opacity: 1;
+        }
+      }
+    }
   }
 }

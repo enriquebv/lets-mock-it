@@ -12,6 +12,6 @@ module.exports = server => {
     socket.emit('mocks-list', mockIt.getMocks())
 
     /** Create a new mock */
-    socket.on('create-mock', mock => mockIt.createMock(mock))
+    socket.on('create-mock', (mock, callback) => mockIt.createMock(mock, callback))
   })
 }
