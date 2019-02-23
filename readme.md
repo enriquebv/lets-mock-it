@@ -30,6 +30,13 @@ npm run start
 * [Express](https://expressjs.com/) - Web framework
 * [Socket.io](https://socket.io/) - Realtime communication between Back-end and Front-end
 
+## To Do
+[X] AJAX support.
+[ ] Websocket support.
+[ ] Socket.io support.
+[ ] Server Sent Events.
+[ ] GraphQL.
+
 ## Authors
 
 * **Enrique Bernabeu** - *Development.* - [enriquebv](https://github.com/enriquebv)
