@@ -32,4 +32,4 @@ npm run start
 
 ## Authors
 
-* **Enrique Bernabeu** - *Initial work* - [enriquebv](https://github.com/enriquebv)
+* **Enrique Bernabeu** - *Development.* - [enriquebv](https://github.com/enriquebv)
