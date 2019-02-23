@@ -31,11 +31,11 @@ npm run start
 * [Socket.io](https://socket.io/) - Realtime communication between Back-end and Front-end
 
 ## To Do
-[X] AJAX support.
-[ ] Websocket support.
-[ ] Socket.io support.
-[ ] Server Sent Events.
-[ ] GraphQL.
+- [X] AJAX support.
+- [ ] Websocket support.
+- [ ] Socket.io support.
+- [ ] Server Sent Events.
+- [ ] GraphQL.
 
 ## Authors
 
