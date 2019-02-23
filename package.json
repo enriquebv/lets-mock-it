@@ -15,7 +15,6 @@
     "express": "^4.16.3",
     "js-yaml": "^3.11.0",
     "json-beautify": "^1.0.1",
-    "particlesjs": "^2.2.3",
     "socket.io": "^2.1.1",
     "socket.io-client": "^2.1.1",
     "vue-tippy": "^2.0.24"

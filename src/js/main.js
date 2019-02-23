@@ -1,5 +1,4 @@
 import Vue from 'vue'
-import Particles from 'particlesjs'
 import VueTippy from 'vue-tippy'
 import SocketIo from 'socket.io-client'
 
@@ -112,14 +111,6 @@ new Vue({
     }
   },
   mounted() {
-    /** Particles Background */
-    Particles.init({
-      selector: '.particle-bg',
-      color: '#2980b9',
-      connectParticles: true,
-      sizeVariations: 3
-    })
-
     /** Socket.io */
     const socket = this.socket = new SocketIo()
 
