@@ -68,6 +68,19 @@ button {
   display: flex;
   flex-flow: column;
 
+  .vue-notification-template.general-top {
+    padding: 16px 0px;
+    color: #fff;
+    background: #2ecc71;
+    font-weight: bold;
+    font-weight: 1.25em;
+
+    .notification-content {
+      max-width: 1600px;
+      margin: 0px auto;
+    }
+  }
+
   header {
     h1 {
       color: $grey-text;
@@ -165,10 +178,31 @@ button {
         flex-flow: row nowrap;
         justify-content: space-between;
         margin-bottom: 6px;
+        transition: all 0.3s ease-in-out;
+
+        &.updating {
+          border-left: 6px solid #2980b9;
+          position: relative;
+
+          &:after {
+            left: 100%;
+            top: 50%;
+            border: solid transparent;
+            content: " ";
+            height: 0;
+            width: 0;
+            position: absolute;
+            pointer-events: none;
+            border-color: rgba(255, 255, 255, 0);
+            border-left-color: #fff;
+            border-width: 10px;
+            margin-top: -10px;
+          }
+        }
 
         span {
           margin: auto 0px;
-          flex: 1;
+          cursor: copy;
           max-width: 100%;
           text-overflow: ellipsis;
           overflow: hidden;
@@ -363,7 +397,7 @@ button {
 
     textarea.response {
       box-sizing: border-box;
-      margin:12px 0px;
+      margin: 12px 0px;
       min-width: 100%;
       width: 100%;
       max-width: 100%;
@@ -474,11 +508,11 @@ div.method-selector {
 }
 
 .tippy-tooltip.menu-theme {
-  padding:0;
+  padding: 0;
   background: none;
-  
+
   .tippy-content {
-    background: #FFF;
+    background: #fff;
     border-radius: 4px;
     overflow: hidden;
     .mock-listed-options {
@@ -486,12 +520,12 @@ div.method-selector {
       flex-flow: column;
       justify-content: center;
       button {
-        background:#FFF;
-        border:none;
+        background: #fff;
+        border: none;
         cursor: pointer;
         opacity: 0.6;
         &.remove {
-          color:#e74c3c;
+          color: #e74c3c;
         }
         &:hover {
           opacity: 1;

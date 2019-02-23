@@ -1,6 +1,11 @@
 <template>
-  <div class="mock-listed" :title="`/${mock.endpoint}`">
-    <span>/{{ mock.endpoint }}</span>
+  <div
+    class="mock-listed"
+    :class="{updating: mock.id === currentUpdating}"
+    :title="`/${mock.endpoint}`"
+    @click.self="loadMock"
+  >
+    <span @click="copyEndpoint">/{{ mock.endpoint }}</span>
     <button
       v-tippy="{
         html: `#mock-listed-options-${this.index}`,
@@ -36,30 +41,45 @@
 </template>
 
 <script>
+import copy from "clipboard-copy";
+
 export default {
-  props: [
-    'currentUrl',
-    'mock',
-    'index'
-  ],
+  props: ["currentUrl", "currentUpdating", "mock", "index"],
   methods: {
     openEndpoint() {
-      window.open(`${this.currentUrl}${this.mock.endpoint}`, '_blank')
+      window.open(`${this.currentUrl}${this.mock.endpoint}`, "_blank");
     },
     tippyConfig() {
       return {
         html: `#mock-listed-options-${this.index}`,
         interactive: true,
         reactive: true,
-        trigger: 'click',
+        trigger: "click",
         arrow: true
-      }
+      };
+    },
+    loadMock() {
+      this.$emit("load-mock", this.mock.id);
+    },
+    copyEndpoint() {
+      copy(this.fullUrl)
+        .then(success => {
+          this.$toasted.show("URL Copied!", {
+            theme: "toasted-primary",
+            position: "top-left",
+            duration: 2000
+          })
+        })
+        .catch(error => console.error("Error al copiar", error));
     }
   },
   computed: {
     activeText() {
-      return (this.mock.active) ? 'Deactivate' : 'Activate'
+      return this.mock.active ? "Deactivate" : "Activate";
+    },
+    fullUrl() {
+      return this.currentUrl + this.mock.endpoint;
     }
   }
-}
+};
 </script>

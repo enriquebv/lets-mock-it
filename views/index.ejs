@@ -25,8 +25,10 @@
           v-for="(mock, index) in channelMocks"
           :key="index"
           :current-url="currentUrl"
+          :current-updating="currentUpdating"
           :mock="mock"
-          :index="index">
+          :index="index"
+          @load-mock="loadMock">
         </mock-listed>
       
       </div>

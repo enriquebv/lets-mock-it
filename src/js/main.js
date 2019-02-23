@@ -2,11 +2,15 @@ import Vue from 'vue'
 import VueTippy from 'vue-tippy'
 import md5 from 'md5'
 import SocketIo from 'socket.io-client'
+import Toasted from 'vue-toasted'
 
 // Components
 import mockListed from '../components/mock-listed.vue'
 
 Vue.use(VueTippy)
+Vue.use(Toasted, {
+  singleton: true
+})
 
 new Vue({
   el: '#lets-mock-it',
@@ -14,6 +18,7 @@ new Vue({
     mockListed
   },
   data: {
+    currentUpdating: '',
     currentAction: 'Crear',
     socket: {},
     channels: [
@@ -32,9 +37,20 @@ new Vue({
     method: 'get',
     endpoint: '',
     status: 200,
-    mocksList: {}
+    mocksList: {},
   },
   methods: {
+    loadMock(id) {
+      const mock = this.mocksList.filter(mock => mock.id === id)[0]
+
+      if (mock.channel === 'ajax') {
+        this.currentUpdating = mock.id
+        this.ajax.format = mock.format
+        this.ajax.response = mock.response
+        this.method = mock.method
+        this.endpoint = mock.endpoint
+      }
+    },
     loadCode(code) {
       console.info(code)
     },
@@ -101,9 +117,6 @@ new Vue({
       this.ajax.response = ''
       this.ajax.format = 'raw'
       this.ajax.method = 'get'
-    },
-    loadMock(mock) {
-      console.info(mock)
     },
     openEndpoint(endpoint) {
       window.open(`${this.currentUrl}${endpoint}`, '_blank')
