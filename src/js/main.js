@@ -1,11 +1,18 @@
 import Vue from 'vue'
 import VueTippy from 'vue-tippy'
+import md5 from 'md5'
 import SocketIo from 'socket.io-client'
+
+// Components
+import mockListed from '../components/mock-listed.vue'
 
 Vue.use(VueTippy)
 
 new Vue({
   el: '#lets-mock-it',
+  components: {
+    mockListed
+  },
   data: {
     currentAction: 'Crear',
     socket: {},
@@ -64,7 +71,10 @@ new Vue({
         status: this.status,
         response: this.ajax.response,
         format: this.ajax.format,
-        method: this.method
+        method: this.method,
+        active: true,
+        id: md5(Date.now() + '-ajax'),
+        date: Date.now()
       }
 
       this.saveMock(mock)
@@ -107,7 +117,7 @@ new Vue({
       return window.location.href
     },
     channelMocks() {
-      return this.mocksList.filter(mock => mock.endpint = this.creatingChannel)
+      return this.mocksList.filter(mock => mock.channel === this.creatingChannel)
     }
   },
   mounted() {
