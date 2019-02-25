@@ -19,7 +19,6 @@ new Vue({
   },
   data: {
     currentUpdating: '',
-    currentAction: 'Crear',
     socket: {},
     channels: [
       { id: 'ajax', name: 'AJAX', active: true, description: 'Create an endpoint to make AJAX requests, and get some data.' },
@@ -81,6 +80,11 @@ new Vue({
       }
     },
     createAjaxMock() {
+      const updating = this.currentUpdating.length !== 0
+      const original = (updating)
+        ? this.mocksList.filter(mock => mock.id === this.currentUpdating)[0]
+        : false
+
       const mock = {
         endpoint: this.endpoint,
         channel: this.creatingChannel,
@@ -88,39 +92,82 @@ new Vue({
         response: this.ajax.response,
         format: this.ajax.format,
         method: this.method,
-        active: true,
-        id: md5(Date.now() + '-ajax'),
-        date: Date.now()
+        active: true
       }
 
-      this.saveMock(mock)
+      if (!updating && !original) {
+        mock.id = md5(Date.now() + '-ajax')
+        mock.date = Date.now()
+
+        this.saveMock(mock)
+      }
+
+      if (updating && original) {
+        mock.id = original.id
+        mock.date = original.date || Date.now()
+
+        this.updateMock(mock)
+      }
     },
-    addMock(mock) {
-      this.mocksList.push(mock)
+    changeMockStatus(data) {
+      this.socket.emit('change-mock-status', data)
+    },
+    updateMockStatus(data) {
+      const mock = this.mocksList.filter(mock => mock.id === data.id)[0]
+      const position = this.mocksList.indexOf(mock)
+
+      mock.active = data.status
+      this.mocksList[position] = mock
+    },
+    updateMockRemoved(data) {
+      const mock = this.mocksList.filter(mock => mock.id === data.id)[0]
+      const position = this.mocksList.indexOf(mock)
+
+      mock.active = data.status
+      this.mocksList[position] = mock
+    },
+    removeMock(id) {
+      this.socket.emit('remove-mock', id)
+    },
+    updateMock(mock) {
+      this.socket.emit('update-mock', mock, response => {
+        if (response.message === 'mock-updated') {
+          console.info('Actualizado mock', response.id)
+        }
+      })
+    },
+    updateMockRemoved(id) {
+      const mock = this.mocksList.filter(mock => mock.list === id)[0]
+      const position = this.mocksList.indexOf(mock)
+
+      this.mocksList.splice(position, 1)
     },
     saveMock(mock) {
-      this.socket.emit('create-mock', mock, response => {
-        if (response.message === 'mock-exists') {
-          alert('Este endpoint ya existe.')
-          return false
-        }
-
-        this.addMock(mock)
-        this.cleanMockObject()
-      })
+      this.socket.emit('create-mock', mock)
+      this.mocksList.push(mock)
+      this.cleanMockObject()
+    },
+    resetAjaxPanel() {
+      this.currentUpdating = ''
+      this.cleanMockObject()
     },
     cleanMockObject() {
       this.endpoint = ''
       this.status = 200
+      this.method = 'get'
 
-      /** ajax specific */
+      // ajax specific
       this.ajax.response = ''
       this.ajax.format = 'raw'
       this.ajax.method = 'get'
     },
-    openEndpoint(endpoint) {
-      window.open(`${this.currentUrl}${endpoint}`, '_blank')
-    },
+    showServerError(error) {
+      switch (error) {
+        case 'mock-exists':
+          alert('El mock ya existe.')
+          break
+      }
+    }
   },
   computed: {
     currentChannel() {
@@ -131,6 +178,11 @@ new Vue({
     },
     channelMocks() {
       return this.mocksList.filter(mock => mock.channel === this.creatingChannel)
+    },
+    currentAction() {
+      return (this.currentUpdating.length === 0)
+        ? 'Create'
+        : 'Update'
     }
   },
   mounted() {
@@ -138,12 +190,8 @@ new Vue({
     const socket = this.socket = new SocketIo()
 
     socket.on('mocks-list', data => this.mocksList = data)
-    socket.on('server-message-error', error => {
-      switch (error) {
-        case 'mock-exists':
-          alert('El mock ya existe.')
-          break
-      }
-    })
+    socket.on('server-message-error', this.showServerError)
+    socket.on('mock-status-changed', this.updateMockStatus)
+    socket.on('mock-removed', this.updateMockRemoved)
   }
 })

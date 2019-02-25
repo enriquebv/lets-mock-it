@@ -23,12 +23,14 @@
 
         <mock-listed
           v-for="(mock, index) in channelMocks"
-          :key="index"
+          :key="mock.id"
           :current-url="currentUrl"
           :current-updating="currentUpdating"
           :mock="mock"
           :index="index"
-          @load-mock="loadMock">
+          @load-mock="loadMock"
+          @change-mock-status="changeMockStatus"
+          @remove-mock="removeMock">
         </mock-listed>
       
       </div>
@@ -67,8 +69,8 @@
             <label for="method-post" class="method-label">POST</label>
           </div>
           <div class="actions">
-            <button class="cancel">Cancelar</button>
-            <button @click="createMock">Crear mock</button>
+            <button @click="resetAjaxPanel" class="cancel">Cancel</button>
+            <button @click="createMock">{{ currentAction }}</button>
           </div>
         </div>
       </div>
